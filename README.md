@@ -22,3 +22,13 @@ Scrapers in other repositories
 * [archivers by nektro](https://github.com/nektro/archivers) - A collection of scripts to mass download data from various sites
 
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
+
+* [lazynlp by chiphuyen](https://github.com/chiphuyen/lazynlp) - Library to scrape and clean web pages to create massive datasets
+
+* [wayback-machine-downloader](https://github.com/hartator/wayback-machine-downloader) - Download an entire website from the Wayback Machine
+
+* [PixivDownloader](https://github.com/nonPointer/PixivDownloader) - Simple batch tool to download one's image from Pixiv
+
+* [archivebot-archives](https://github.com/nonPointer/PixivDownloader) - This repository containes a list of files in the ArchiveBot Collection on the Internet Archive and the corresponding codes.
+
+* [ArchiveBot](https://github.com/ArchiveTeam/ArchiveBot) - ArchiveBot, an IRC bot for archiving websites
