@@ -13,22 +13,26 @@ All scrapers in this repository with a brief description
 ## Others
 Scrapers in other repositories
 
-* [theoatmeal.com-downloader](https://github.com/LameLemon/theoatmeal.com-downloader) - Grabs all comics from [The Oatmeal](https://theoatmeal.com)
-
-* [zenpencils-downloader](https://github.com/LameLemon/zenpencils-downloader) - Grabs all comics from [zen pencils](https://zenpencils.com/)
-
-* [RedditImageBackup](https://github.com/LameLemon/RedditImageBackup) - Grabs all images, gifs, videos and text posts from Reddit 
+* [ArchiveBot by ArchiveTeam](https://github.com/ArchiveTeam/ArchiveBot) - ArchiveBot, an IRC bot for archiving websites
 
 * [archivers by nektro](https://github.com/nektro/archivers) - A collection of scripts to mass download data from various sites
 
+* [archivebot-archives nonPointer](https://github.com/nonPointer/PixivDownloader) - This repository containes a list of files in the ArchiveBot Collection on the Internet Archive and the corresponding codes.
+
+* [Automated-ISO-ripping by pascaldulieu](https://github.com/pascaldulieu/Automated-ISO-ripping) - Short bash script to automatically rip ISOs
+
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
+
+* [Discord-Channel-scraper by simon987](https://github.com/simon987/Discord-Channel-scraper) Scrapes an arbitrary number of lines from a Discord channel
 
 * [lazynlp by chiphuyen](https://github.com/chiphuyen/lazynlp) - Library to scrape and clean web pages to create massive datasets
 
-* [wayback-machine-downloader](https://github.com/hartator/wayback-machine-downloader) - Download an entire website from the Wayback Machine
+* [PixivDownloader by nonPointer](https://github.com/nonPointer/PixivDownloader) - Simple batch tool to download one's image from Pixiv
 
-* [PixivDownloader](https://github.com/nonPointer/PixivDownloader) - Simple batch tool to download one's image from Pixiv
+* [RedditImageBackup](https://github.com/LameLemon/RedditImageBackup) - Grabs all images, gifs, videos and text posts from Reddit 
 
-* [archivebot-archives](https://github.com/nonPointer/PixivDownloader) - This repository containes a list of files in the ArchiveBot Collection on the Internet Archive and the corresponding codes.
+* [theoatmeal.com-downloader](https://github.com/LameLemon/theoatmeal.com-downloader) - Grabs all comics from [The Oatmeal](https://theoatmeal.com)
 
-* [ArchiveBot](https://github.com/ArchiveTeam/ArchiveBot) - ArchiveBot, an IRC bot for archiving websites
+* [wayback-machine-downloader by hartator](https://github.com/hartator/wayback-machine-downloader) - Download an entire website from the Wayback Machine
+
+* [zenpencils-downloader](https://github.com/LameLemon/zenpencils-downloader) - Grabs all comics from [zen pencils](https://zenpencils.com/)
