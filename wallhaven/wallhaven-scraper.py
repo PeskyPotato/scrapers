@@ -6,14 +6,23 @@ from urllib.error import URLError
 from time import sleep
 import os
 import sys
+import argparse
+# from dataclasses import dataclass
+
+# TODO
+# @dataclass
+# class parameters:
+#     query: str
+#     y: float
+#     z: float = 0.0
 
 
-def parsePages(search):
-    print("Searching for {}".format(search.replace("%20", " ")))
+def parsePages(query, categories, purity, sorting, order, colors):
+    print("Searching for {}".format(query.replace("%20", " ")))
     page = 1
     while(1):
         print("==== Page {} ====".format(page))
-        url = "https://alpha.wallhaven.cc/search?q={}&search_image=&page={}".format(search, page)
+        url = "https://alpha.wallhaven.cc/search?q={}&categories={}&purity={}&sorting={}&order={}&page={}".format(query, categories, purity, sorting, order, page)
 
         req = Request(
             url, 
@@ -64,7 +73,7 @@ def saveImage(picture_id):
     author_name = image_soup.findAll("a", {"class":"username"})[0].text
     image_full = image_soup.findAll("img",{"id":"wallpaper"})[0]["src"]
     image_ext = image_full.split(".")[-1]
-    print(author_name, "https:" + image_full, image_ext)
+    print(author_name, "https:" + image_full)
 
     req_two = Request(
         "https:{}".format(image_full), 
@@ -86,13 +95,27 @@ def saveImage(picture_id):
 
 
 def main():
+    q = "pixel"
+    categories = "111"
+    purity = "100"
+    sort = "relevance"
+    order = "desc"
+    colors = ""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sort", help="suported keywords relevance, random, date_added, views, favorites, toplist", default="relevance")
+    parser.add_argument("query", help ="enter serach term")
+    args = parser.parse_args()
+
+    if args.sort in ["relevance", "random", "date_added", "views", "favorites", "toplist"]:
+        sort = args.sort
+
+    if args.query:
+        q = args.query.replace(" ", "%20")
+        
     if not os.path.exists('wallpapers'):
         os.makedirs('wallpapers')
-
-    search = "pixel"
-    if len(sys.argv) > 1:
-        search = sys.argv[1].replace(" ", "%20")
-    parsePages(search)
+    
+    parsePages(q, categories, purity,sort, order, colors)
 
 if __name__ == "__main__":
     main()
