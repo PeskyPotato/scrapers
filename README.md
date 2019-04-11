@@ -6,6 +6,10 @@ All scrapers in this repository with a brief description
 
 * calibre-server - Grabs ebooks from a calibre-server
 * dafont - Grabs fonts uploaded to dafont.com
+* impawards - Grabs all movie posters from impawards.com
+* shzm - Grabs the top 50 songs by city from shazam.com
+* thecoverproject - Grabs all the game posters from thecoverproject.net
+* wallhaven - Grabs all the images for a given search query
 * waset - Grabs papers published to waset.org
 * xkcd - Grabs comics posted to xkcd.com
 
