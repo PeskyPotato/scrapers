@@ -27,13 +27,16 @@ Scrapers in other repositories
 
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
 
-* [Discord-Channel-scraper by simon987](https://github.com/simon987/Discord-Channel-scraper) Scrapes an arbitrary number of lines from a Discord channel
+* [Discord-Channel-scraper by simon987](https://github.com/simon987/Discord-Channel-scraper) - Scrapes an arbitrary number of lines from a Discord channel
 
+* [e621Crawler](https://github.com/fionera/e621Crawler) by [fionera](https://github.com/fionera) - Scrapes images from e621.net (nfsw)
 * [lazynlp by chiphuyen](https://github.com/chiphuyen/lazynlp) - Library to scrape and clean web pages to create massive datasets
 
 * [PixivDownloader by nonPointer](https://github.com/nonPointer/PixivDownloader) - Simple batch tool to download one's image from Pixiv
 
 * [RedditImageBackup](https://github.com/LameLemon/RedditImageBackup) - Grabs all images, gifs, videos and text posts from Reddit 
+
+* [scrapereplacementdocs](https://github.com/Itxaka/scrapereplacementdocs) by [Itxaka](https://github.com/Itxaka/scrapereplacementdocs) - Scrapy spider to download pdfs from replacementdocs.com
 
 * [theoatmeal.com-downloader](https://github.com/LameLemon/theoatmeal.com-downloader) - Grabs all comics from [The Oatmeal](https://theoatmeal.com)
 
