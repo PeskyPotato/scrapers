@@ -8,8 +8,7 @@ import os
 import sys
 
 def scrape_page():
-
-    page = 8
+    page = 1
     while(1):
         print("==== Page", page, " ====")
         url = "https://iconmonstr.com/page/{}".format(page)
@@ -21,7 +20,6 @@ def scrape_page():
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
             }
         )
-
         try:
             uClient = urlopen(req)
             page_html = uClient.read()
@@ -46,7 +44,6 @@ def scrape_icon(url):
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
         }
     )
-
     uClient = urlopen(req)
     page_html = uClient.read()
     uClient.close()
@@ -63,12 +60,10 @@ def scrape_icon(url):
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
             }
         )
-
         uClient = urlopen(req)
         page_html = uClient.read()
         uClient.close()
         page_soup = soup(page_html, "lxml")
-        print(url)
         if form["id"] == "png":
             n = page_soup.findAll("h3", {"class": "date"})[0]["id"]
             i = page_soup.findAll("div", {"class": "active toggle-btn"})[0]["id"]
