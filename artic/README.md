@@ -1,4 +1,4 @@
-# iconmonstr-scraper
+# artic-scraper
 
 Downloads all artwork within the page range on artic.edu/collection.
 
