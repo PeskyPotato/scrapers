@@ -4,8 +4,10 @@ This is going to be a repository for random scrapers I've come to develop over t
 ## Description
 All scrapers in this repository with a brief description
 
+* artic - Grabs art along with metadata from artic.edu 
 * calibre-server - Grabs ebooks from a calibre-server
 * dafont - Grabs fonts uploaded to dafont.com
+* iconmonstr - Grabs icons in all formats from iconmonstr.com
 * impawards - Grabs all movie posters from impawards.com
 * shzm - Grabs the top 50 songs by city from shazam.com
 * thecoverproject - Grabs all the game posters from thecoverproject.net
