@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, urlretrieve
+from urllib.parse import urlsplit
 from urllib.error import HTTPError
+import requests
 import sys
 import os
 from lxml import etree
@@ -14,7 +16,14 @@ def scrap_mobile(page, url, direct):
         link = tag.find('a').attrs['href']
         print(link)
         
-        urlretrieve(url + link, direct + link.split('/')[-1].replace('%20', '_').replace('%2C', ',').replace('%5B', ']').replace('%5D', ']').replace('%27', '\''))
+        # urlretrieve(url + link, direct + link.split('/')[-1].replace('%20', '_').replace('%2C', ',').replace('%5B', ']').replace('%5D', ']').replace('%27', '\''))
+        r = requests.get(url + link, stream = True)
+        with open(direct + link.split('/')[-1].replace('%20', '_').replace('%2C', ',').replace('%5B', ']').replace('%5D', ']').replace('%27', '\''), "wb") as f:
+            for chunk in r.iter_content(chunk_size=1024):
+                if chunk:
+                    f.write(chunk)
+                    
+
         counter += 1
 
     print("Downloaded", counter, "out of", len(tags))
@@ -47,6 +56,10 @@ def main ():
         print("Enter url as arg")
         exit()
 
+    # validate and prepare url
+    if "http" not in url:
+        url = "http://" + url
+    url = urlsplit(url)[0] + "://" + urlsplit(url)[1]
     if url[-1] is '/':
         url = url[0:-1]
 
