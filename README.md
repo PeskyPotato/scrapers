@@ -9,9 +9,10 @@ All scrapers in this repository with a brief description
 * dafont - Grabs fonts uploaded to dafont.com
 * iconmonstr - Grabs icons in all formats from iconmonstr.com
 * impawards - Grabs all movie posters from impawards.com
+* memoryoftheworld - Grabs all the books from memoryoftheworld.org
 * shzm - Grabs the top 50 songs by city from shazam.com
 * thecoverproject - Grabs all the game posters from thecoverproject.net
-* wallhaven - Grabs all the images for a given search query
+* wallhaven - Grabs all the images for a given search query from wallhaven.cc
 * waset - Grabs papers published to waset.org
 * xkcd - Grabs comics posted to xkcd.com
 
