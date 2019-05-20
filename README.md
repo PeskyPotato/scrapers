@@ -9,6 +9,7 @@ All scrapers in this repository with a brief description
 * dafont - Grabs fonts uploaded to dafont.com
 * iconmonstr - Grabs icons in all formats from iconmonstr.com
 * impawards - Grabs all movie posters from impawards.com
+* linfoxdomain - Grabs all flash games from linfoxdomain.com
 * memoryoftheworld - Grabs all the books from memoryoftheworld.org
 * shzm - Grabs the top 50 songs by city from shazam.com
 * thecoverproject - Grabs all the game posters from thecoverproject.net
