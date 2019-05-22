@@ -24,6 +24,8 @@ Scrapers in other repositories
 
 * [acloud-dl by r0oth3x49](https://github.com/r0oth3x49/acloud-dl) - A cross-platform python based utility to download courses from acloud.guru for personal offline use
 
+* [allitebooks-downloader](https://github.com/thomasbrueggemann/allitebooks-downloader) - 📚 Scrapes and downloads all IT eBooks http://allitebooks.com
+
 * [ArchiveBot by ArchiveTeam](https://github.com/ArchiveTeam/ArchiveBot) - ArchiveBot, an IRC bot for archiving websites
 
 * [archivers by nektro](https://github.com/nektro/archivers) - A collection of scripts to mass download data from various sites
@@ -36,11 +38,18 @@ Scrapers in other repositories
 
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
 
+* [comics-downloader by Girbons](https://github.com/Girbons/comics-downloader) - Command-line tool to download comics and manga in pdf/epub/cbr/cbz from a website
+
 * [Discord-Channel-scraper by simon987](https://github.com/simon987/Discord-Channel-scraper) - Scrapes an arbitrary number of lines from a Discord channel
 
 * [download_scholar_pdfs by bozelosp](https://github.com/bozelosp/download_scholar_pdfs) - Batch .PDF downloading from a list of DOIs and/or titles. PDF files are retrieved/download from libgen scholar archives.
 
+* [DownCloud by seru1us](https://github.com/seru1us/DownCloud) - Download SoundCloud tracks posted on targetted subreddits
+
 * [e621Crawler by fionera](https://github.com/fionera/e621Crawler) - Scrapes images from e621.net (nfsw)
+
+* [github-scraper](https://github.com/nelsonic/github-scraper) - 🕷️ 🕸️ crawl GitHub web pages for insights we can't GET from the API... 💡
+* [grab-site by ArchiveTeam](https://github.com/ArchiveTeam/grab-site) - The archivist's web crawler: WARC output, dashboard for all crawls, dynamic ignore patterns
 
 * [lazynlp by chiphuyen](https://github.com/chiphuyen/lazynlp) - Library to scrape and clean web pages to create massive datasets
 
