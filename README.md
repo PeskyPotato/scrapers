@@ -24,17 +24,19 @@ Scrapers in other repositories
 
 * [acloud-dl by r0oth3x49](https://github.com/r0oth3x49/acloud-dl) - A cross-platform python based utility to download courses from acloud.guru for personal offline use
 
-* [allitebooks-downloader](https://github.com/thomasbrueggemann/allitebooks-downloader) - 📚 Scrapes and downloads all IT eBooks http://allitebooks.com
+* [allitebooks-downloader by thomasbrueggemann](https://github.com/thomasbrueggemann/allitebooks-downloader) - 📚 Scrapes and downloads all IT eBooks http://allitebooks.com
 
 * [ArchiveBot by ArchiveTeam](https://github.com/ArchiveTeam/ArchiveBot) - ArchiveBot, an IRC bot for archiving websites
 
-* [archivers by nektro](https://github.com/nektro/archivers) - A collection of scripts to mass download data from various sites
-
 * [archivebot-archives by nonPointer](https://github.com/nonPointer/PixivDownloader) - This repository containes a list of files in the ArchiveBot Collection on the Internet Archive and the corresponding codes.
+
+* [archivers by nektro](https://github.com/nektro/archivers) - A collection of scripts to mass download data from various sites
 
 * [ArchiveTools by recrm](https://github.com/recrm/ArchiveTools) - A collection of tools for archiving and analysing the internet
 
 * [Automated-ISO-ripping by pascaldulieu](https://github.com/pascaldulieu/Automated-ISO-ripping) - Short bash script to automatically rip ISOs
+
+* [awesome-dl by Kickball](https://github.com/Kickball/awesome-dl) - This is a list of repositories and libraries that allow for scripted downloading of online content
 
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
 
@@ -48,7 +50,10 @@ Scrapers in other repositories
 
 * [e621Crawler by fionera](https://github.com/fionera/e621Crawler) - Scrapes images from e621.net (nfsw)
 
+* [flickr-search-scraper by AlexOwen](https://github.com/AlexOwen/flickr-search-scraper) -  Script to capture a JSON file of all search results along with the best version of each image in the search
+
 * [github-scraper](https://github.com/nelsonic/github-scraper) - 🕷️ 🕸️ crawl GitHub web pages for insights we can't GET from the API... 💡
+
 * [grab-site by ArchiveTeam](https://github.com/ArchiveTeam/grab-site) - The archivist's web crawler: WARC output, dashboard for all crawls, dynamic ignore patterns
 
 * [lazynlp by chiphuyen](https://github.com/chiphuyen/lazynlp) - Library to scrape and clean web pages to create massive datasets
