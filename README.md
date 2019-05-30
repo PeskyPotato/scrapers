@@ -5,6 +5,7 @@ This is going to be a repository for random scrapers I've come to develop over t
 All scrapers in this repository with a brief description
 
 * artic - Grabs art along with metadata from artic.edu 
+* bensound - Grabs royalty music from bensound.com
 * calibre-server - Grabs ebooks from a calibre-server
 * dafont - Grabs fonts uploaded to dafont.com
 * iconmonstr - Grabs icons in all formats from iconmonstr.com
@@ -14,10 +15,10 @@ All scrapers in this repository with a brief description
 * shzm - Grabs the top 50 songs by city from shazam.com
 * thecoverproject - Grabs all the game posters from thecoverproject.net
 * theoatmeal - Grabs comics from theoatmeal.com
+* vulnhub - Downloads itme and all metadata on each item from vulnhub.com
 * wallhaven - Grabs all the images for a given search query from wallhaven.cc
 * waset - Grabs papers published to waset.org
 * xkcd - Grabs comics posted to xkcd.com
-
 
 ## Others
 Scrapers in other repositories
