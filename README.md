@@ -39,6 +39,8 @@ Scrapers in other repositories
 
 * [awesome-dl by Kickball](https://github.com/Kickball/awesome-dl) - This is a list of repositories and libraries that allow for scripted downloading of online content
 
+* [book-downloader by Rocketeer999](https://github.com/Rocketeer999/book-downloader) - Downloads books from irchighway
+
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
 
 * [comics-downloader by Girbons](https://github.com/Girbons/comics-downloader) - Command-line tool to download comics and manga in pdf/epub/cbr/cbz from a website
@@ -57,9 +59,15 @@ Scrapers in other repositories
 
 * [grab-site by ArchiveTeam](https://github.com/ArchiveTeam/grab-site) - The archivist's web crawler: WARC output, dashboard for all crawls, dynamic ignore patterns
 
+* [instagram-scraper by rarcega](https://github.com/rarcega/instagram-scraper) - Scrapes an instagram user's photos and videos
+
+* [InstaHoarder by beaston02](https://github.com/beaston02/InstaHoarder) - Auto save instagram users stories and posts
+
 * [lazynlp by chiphuyen](https://github.com/chiphuyen/lazynlp) - Library to scrape and clean web pages to create massive datasets
 
 * [Mega.nz-IDM-downloader by CHEF-KOCH](https://github.com/CHEF-KOCH/Mega.nz-IDM-downloader) - How to download from Mega.nz with IDM - Unlimited
+
+* [Misc-Download-Scripts by simon987](https://github.com/simon987/Misc-Download-Scripts) - Miscellaneous download scripts
 
 * [Music-Hoarders-Bot by JPBotelho](https://github.com/JPBotelho/Music-Hoarders-Bot) - Discord bot written in python for the music hoarders server
 
@@ -67,9 +75,14 @@ Scrapers in other repositories
 
 * [RedditImageBackup by LameLemon](https://github.com/LameLemon/RedditImageBackup) - Grabs all images, gifs, videos and text posts from Reddit 
 
+* [redditPostArchiver by pl77](https://github.com/pl77/redditPostArchiver) - Easily archive important Reddit post threads onto your computer
+
 * [scihubscraper by mikesuhan](https://github.com/mikesuhan/scihubscraper) - Downloads pdfs of articles from Sci-Hub (sci-hub.tw) based on their DOI
 
 * [scrapereplacementdocs by Itxaka](https://github.com/Itxaka/scrapereplacementdocs) - Scrapy spider to download pdfs from replacementdocs.com
+
+* [twitter-scraper by kennethreitz](https://github.com/kennethreitz/twitter-scraper) - Scrape the Twitter Frontend API without authentication.
+
 
 * [wayback-machine-downloader by hartator](https://github.com/hartator/wayback-machine-downloader) - Download an entire website from the Wayback Machine
 
