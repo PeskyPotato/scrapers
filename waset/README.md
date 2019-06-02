@@ -1,7 +1,10 @@
 # waset-scraper
 
 Downloads papers published to the popular predatory publisher waset.org :)
-
+If you do not care about the meteadata stored in the json file you can download the papers much quicker like so
+```
+seq 1 1 10010100 | parallel -j100 wget -c --content-disposition https://waset.org/publications/{}
+```
 ## Prerequisites
 * python3
 * bs4
