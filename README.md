@@ -59,6 +59,8 @@ Scrapers in other repositories
 
 * [grab-site by ArchiveTeam](https://github.com/ArchiveTeam/grab-site) - The archivist's web crawler: WARC output, dashboard for all crawls, dynamic ignore patterns
 
+* [humblebundle-downloader by diogogmt](https://github.com/diogogmt/humblebundle-downloader) - Download book from Humble Bundles
+
 * [instagram-scraper by rarcega](https://github.com/rarcega/instagram-scraper) - Scrapes an instagram user's photos and videos
 
 * [InstaHoarder by beaston02](https://github.com/beaston02/InstaHoarder) - Auto save instagram users stories and posts
@@ -80,6 +82,10 @@ Scrapers in other repositories
 * [scihubscraper by mikesuhan](https://github.com/mikesuhan/scihubscraper) - Downloads pdfs of articles from Sci-Hub (sci-hub.tw) based on their DOI
 
 * [scrapereplacementdocs by Itxaka](https://github.com/Itxaka/scrapereplacementdocs) - Scrapy spider to download pdfs from replacementdocs.com
+
+* [Tidown by Transcodes](https://github.com/Transcodes/Tidown) - A simple, yet efficient, Tital downloader.
+
+* [tpget by 0x6a73](https://github.com/0x6a73/tpget) - Tutorialspoint downloader
 
 * [twitter-scraper by kennethreitz](https://github.com/kennethreitz/twitter-scraper) - Scrape the Twitter Frontend API without authentication.
 
