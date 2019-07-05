@@ -19,6 +19,7 @@ All scrapers in this repository with a brief description
 * wallhaven - Grabs all the images for a given search query from wallhaven.cc
 * waset - Grabs papers published to waset.org
 * xkcd - Grabs comics posted to xkcd.com
+* zenpencil - Grabs all comics from zenpencils.com
 
 ## Others
 Scrapers in other repositories
@@ -39,6 +40,8 @@ Scrapers in other repositories
 
 * [awesome-dl by Kickball](https://github.com/Kickball/awesome-dl) - This is a list of repositories and libraries that allow for scripted downloading of online content
 
+* [BBCSoundDownloader by FThompson](https://github.com/FThompson/BBCSoundDownloader) - Bulk downloader for http://bbcsfx.acropolis.org.uk/.
+
 * [book-downloader by Rocketeer999](https://github.com/Rocketeer999/book-downloader) - Downloads books from irchighway
 
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
@@ -51,11 +54,17 @@ Scrapers in other repositories
 
 * [DownCloud by seru1us](https://github.com/seru1us/DownCloud) - Download SoundCloud tracks posted on targetted subreddits
 
+* [e621.net-file-downloader by OllieTails](https://github.com/OllieTails/e621.net-file-downloader) - Scrapes images from e621.net (nfsw)
+
 * [e621Crawler by fionera](https://github.com/fionera/e621Crawler) - Scrapes images from e621.net (nfsw)
 
 * [flickr-search-scraper by AlexOwen](https://github.com/AlexOwen/flickr-search-scraper) -  Script to capture a JSON file of all search results along with the best version of each image in the search
 
 * [github-scraper](https://github.com/nelsonic/github-scraper) - 🕷️ 🕸️ crawl GitHub web pages for insights we can't GET from the API... 💡
+
+* [GOGGames_Crawler by fionera](https://github.com/fionera/GOGGames_Crawler) - Hacky Crawler for GoodOldDownloads
+
+* [goodolddownloads-deobf by nabijaczleweli](https://github.com/nabijaczleweli/goodolddownloads-deobf) - Deobfuscate https://goggames.goodolddownloads.com/ links
 
 * [grab-site by ArchiveTeam](https://github.com/ArchiveTeam/grab-site) - The archivist's web crawler: WARC output, dashboard for all crawls, dynamic ignore patterns
 
@@ -66,6 +75,8 @@ Scrapers in other repositories
 * [InstaHoarder by beaston02](https://github.com/beaston02/InstaHoarder) - Auto save instagram users stories and posts
 
 * [lazynlp by chiphuyen](https://github.com/chiphuyen/lazynlp) - Library to scrape and clean web pages to create massive datasets
+
+* [Lynx-Program-Downloader by spideyclick](https://github.com/spideyclick/Lynx-Program-Downloader) - This is a bash shell script that downloads programs from websites using Lynx.
 
 * [Mega.nz-IDM-downloader by CHEF-KOCH](https://github.com/CHEF-KOCH/Mega.nz-IDM-downloader) - How to download from Mega.nz with IDM - Unlimited
 
@@ -89,7 +100,6 @@ Scrapers in other repositories
 
 * [twitter-scraper by kennethreitz](https://github.com/kennethreitz/twitter-scraper) - Scrape the Twitter Frontend API without authentication.
 
+* [uDownloader by usbpc](https://github.com/usbpc/uDownloader) - 1Fichier Folder Downloader written in Kotlin with download rate limit and stuff
 
 * [wayback-machine-downloader by hartator](https://github.com/hartator/wayback-machine-downloader) - Download an entire website from the Wayback Machine
-
-* [zenpencils-downloader](https://github.com/LameLemon/zenpencils-downloader) - Grabs all comics from zenpencils.com
