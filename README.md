@@ -42,8 +42,6 @@ Scrapers in other repositories
 
 * [BBCSoundDownloader by FThompson](https://github.com/FThompson/BBCSoundDownloader) - Bulk downloader for http://bbcsfx.acropolis.org.uk/.
 
-* [book-downloader by Rocketeer999](https://github.com/Rocketeer999/book-downloader) - Downloads books from irchighway
-
 * [Bios-Archival-Standards by BiosPlus](https://github.com/BiosPlus/Bios-Archival-Standards) - A collection of gists and notes to help me [BiosPlus] standardize my archival efforts accross the board
 
 * [comics-downloader by Girbons](https://github.com/Girbons/comics-downloader) - Command-line tool to download comics and manga in pdf/epub/cbr/cbz from a website
@@ -89,8 +87,6 @@ Scrapers in other repositories
 * [RedditImageBackup by LameLemon](https://github.com/LameLemon/RedditImageBackup) - Grabs all images, gifs, videos and text posts from Reddit 
 
 * [redditPostArchiver by pl77](https://github.com/pl77/redditPostArchiver) - Easily archive important Reddit post threads onto your computer
-
-* [scihubscraper by mikesuhan](https://github.com/mikesuhan/scihubscraper) - Downloads pdfs of articles from Sci-Hub (sci-hub.tw) based on their DOI
 
 * [scrapereplacementdocs by Itxaka](https://github.com/Itxaka/scrapereplacementdocs) - Scrapy spider to download pdfs from replacementdocs.com
 
