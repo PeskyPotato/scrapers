@@ -1,19 +1,14 @@
 from time import sleep
 from random import randint
-from re import sub
 from urllib.request import urlopen
 from urllib.request import Request
-from urllib.request import urlretrieve
-import requests
 from bs4 import BeautifulSoup as soup
+import re
 
 
-
-def grab_papers():
+def grab_papers(total = 154):
     url_page = 0
-    paper_counter = 0
-    while(1):
-        print("-- Grabbing page ", url_page, "Papers grabbed ", paper_counter, "--")
+    while(url_page < total+1):
         url = 'https://waset.org/Publications?p=' + str(url_page)
         req = Request(
             url, 
@@ -29,34 +24,33 @@ def grab_papers():
 
         page_soup = soup(page_html, "lxml")
         
-        papers = page_soup.findAll("div", {"class":"onePaper"})
-        
-        for paper in papers:
-            tane = paper.findAll("div", {"class":"tane"})[0].string 
-            id = paper.findAll("div", {"class":"id"})[0].string
-            title = paper.findAll("div", {"class":"title"})[0].string
-            if(title is None):
-                title = str(id)
-            json = "JSON", paper.findAll("div", {"class":"pdfButton"})[0].findAll("a", {"class":"pdf button"})[6]['href']
-            pdf = "PDF", paper.findAll("div", {"class":"pdfButton"})[0].findAll("a", {"class":"pdf button"})[11]['href']
-            print(paper_counter, title)
+        papers = page_soup.findAll("div", {"class":"publication-listing"})
 
-            r_pdf = requests.get(pdf[1], stream=True, headers={'User-agent': 'Mozilla/5.0'})
-            with open('{}_{}_{}.pdf'.format(tane, id, formatTitle(title)), 'wb') as f:
-                f.write(r_pdf.content)
+        for paper in papers:
+            title = paper.findAll("h5", {"class", "card-header"})[0].text
+
+            for btn in paper.findAll("a", {"class": "btn-sm"}):
+                if btn.text == 'JSON':
+                    json = btn['href']
+                elif btn.text == 'PDF':
+                    pdf_redirect = btn['href']
+
+            paper_id = re.findall('[0-9]+', pdf_redirect)[0]
+            if(title is None):
+                title = str(paper_id)
+            title = formatTitle(title)
+            pdf = "https://panel.waset.org/publications/{}/pdf".format(paper_id)
+            print("wget -c --content-disposition -O {}.pdf {}".format(title, pdf))
+            print("wget -c --content-disposition -O {}.json {}".format(title, json))
             
-            r_json = requests.get(json[1], stream=True, headers={'User-agent': 'Mozilla/5.0'})
-            with open('{}_{}_{}.json'.format(tane, id, formatTitle(title)), 'wb') as f:
-                f.write(r_json.content)
-            paper_counter += 1
             sleep(randint(0,1))
         url_page += 1
         
 def formatTitle(title):
-    title = sub('[?/|\\\:<>*"]', '', title)
-    title = sub(' ','_', title)
-    if len(title) > 200:
-        title = title[:199]
+    title = re.sub('[?/|\\\:<>*"]', '', title)
+    title = re.sub(' ','_', title)
+    if len(title) > 190:
+        title = title[:189]
     return title
 
 grab_papers()
