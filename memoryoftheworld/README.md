@@ -1,16 +1,15 @@
 # memoryofthewolrd-scraper
 
-Downloads all the books from memoryoftheworld.org.
+Downloads all the metadata for the books on memoryoftheworld.org and creates `books.txt` with direct links to all the books. This text file can be passed into `wget` to download all the books.
 
 ## Prerequisites
 * python3 
 
 ## Usage
+```console
+python3 memoryoftheworld-scraper.py <start_page> <end_page>
 ```
-python3 memoryoftheworld-scraper.py | sed -e 's/^/"/g' -e 's/$/"/g' | xargs -n1 wget
-```
-Sample output
-```
-memes@pepe:~/git/scrapers/memoryoftheworld-scraper$python3 memoryoftheworld-scraper.py | sed -e 's/^/"/g' -e 's/$/"/g' | xargs -n1 wget
---2019-04-12 20:17:03--  https://outernationale.memoryoftheworld.org/Mirko%20Grmek/Pathological%20Realities_%20Essays%20on%20D%20(4565)/Pathological%20Realities_%20Essays%20-%20Mirko%20Grmek.pdf
+For example to download only the first page
+```console
+memes@pepe:~/git/scrapers/memoryoftheworld-scraper$ python3 memoryoftheworld-scraper.py 1 1
 ```
