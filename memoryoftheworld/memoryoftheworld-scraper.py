@@ -1,13 +1,15 @@
 import requests
 import json
 import urllib.request
-import time
 import os
 import sys
 import re
 
 directory = os.getcwd()
 folder = "metadata"
+	
+if not os.path.exists(os.path.join(directory, folder)):
+    os.makedirs(os.path.join(directory, folder))
 
 def format_name(title):
     title = re.sub('[?/|\\\}{:<>*"]', '', title)
@@ -38,7 +40,6 @@ def scrape(start, end):
                 for form in forms:
                     file_path = form["dir_path"]
                     file_name = format_name(form["file_name"])
-                    print(file_name)
                     application_id = str(book["_id"])
                     url = "https:{}{}{}".format(book["library_url"], file_path, file_name)
                     print("Count", count, url)
