@@ -49,6 +49,14 @@ class Settings(object):
 
 settings = Settings()
 
+def safe_name(name):
+    output = ""
+    for char in name:
+        if char not in '\\/<>:"|?*':
+            output = f'{output}{char}'
+
+    return output
+
 def download(url, folder, filename):
     try:
         filepath = path.join(folder, f'{settings.counter}_{filename}')
@@ -94,7 +102,7 @@ def get_image(link, query):
         
         images = regex(r'\<li\>Original\: \<a href\=\"(.*?)\" id\=highres', r.text)
         for image in images:
-            folder = path.join(getcwd(), 'Images', query.replace('+', ' & '))
+            folder = path.join(getcwd(), 'Images', safe_name(query.replace('+', ' & ')))
             filename = image.split('/')[-1].split('?')[0]
             download(image, folder, filename)
 
@@ -143,6 +151,7 @@ def get_latest(query, image):
         
 def search(name, series=None):
     try:
+        settings.counter = 0
         query = f'{name.lower()}' if series is None else f'{name.lower()}_({series.lower().replace(" ", "_")})'
         
         sleep(settings.timeout)
