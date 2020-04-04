@@ -6,6 +6,7 @@ All scrapers in this repository with a brief description
 
 * artic - Grabs art along with metadata from artic.edu 
 * bensound - Grabs royalty music from bensound.com
+* betterttv - Grabs emotes from betterttv.tv
 * calibre-server - Grabs ebooks from a calibre-server
 * dafont - Grabs fonts uploaded to dafont.com
 * iconmonstr - Grabs icons in all formats from iconmonstr.com
@@ -15,6 +16,7 @@ All scrapers in this repository with a brief description
 * shzm - Grabs the top 50 songs by city from shazam.com
 * thecoverproject - Grabs all the game posters from thecoverproject.net
 * theoatmeal - Grabs comics from theoatmeal.com
+* unicode-emoji-chart - Grabs emoji and metadata from unicode.org
 * vulnhub - Downloads itme and all metadata on each item from vulnhub.com
 * wallhaven - Grabs all the images for a given search query from wallhaven.cc
 * waset - Grabs papers published to waset.org
