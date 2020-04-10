@@ -17,8 +17,9 @@ All scrapers in this repository with a brief description
 * thecoverproject - Grabs all the game posters from thecoverproject.net
 * theoatmeal - Grabs comics from theoatmeal.com
 * unicode-emoji-chart - Grabs emoji and metadata from unicode.org
-* vulnhub - Downloads itme and all metadata on each item from vulnhub.com
+* vulnhub - Downloads items and all metadata on each item from vulnhub.com
 * wallhaven - Grabs all the images for a given search query from wallhaven.cc
+* wallpaperflare - Grabs all or some wallpapers with search from wallpaperflare.com
 * waset - Grabs papers published to waset.org
 * xkcd - Grabs comics posted to xkcd.com
 * zenpencil - Grabs all comics from zenpencils.com
