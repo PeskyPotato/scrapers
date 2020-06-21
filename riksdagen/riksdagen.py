@@ -4,6 +4,9 @@ import requests
 import sys
 import re
 import json
+import argparse
+import os
+from download import download_main
 from database import Database, Speaker, Debate
 
 
@@ -20,6 +23,9 @@ def scrape(url_prefix, start, end):
             url = link['href']
             print(url)
             enter_debate(url)
+        if not links:
+            print("End of {} at page {}".format(url, page))
+            return
 
 
 def enter_debate(url):
@@ -69,7 +75,7 @@ def enter_debate(url):
     try:
         db.insert_debate(debate)
     except sqlite3.IntegrityError:
-        print(f"WARNING: Debate already exists {dokid}")
+        print(f"SKIPPING: Debate already exists {dokid}")
 
     speakers = data["videodata"][0]["speakers"]
     if isinstance(speakers, list):
@@ -85,25 +91,62 @@ def enter_debate(url):
             try:
                 db.insert_speaker(speaker_obj)
             except sqlite3.IntegrityError:
-                print(f"WARNING: Speaker already exists {dokid}-{speaker['subid']}")
+                print(f"SKIPPING: Speaker already exists {dokid}-{speaker['subid']}")
     else:
         print(f"WARNING: No speakers for {dokid}")
 
 
 def main():
-    if len(sys.argv) != 4:
-        sys.exit("Specify <url_prefix> <start page> <end page>")
-    try:
-        url_prefix = sys.argv[1]
-        start = int(sys.argv[2])
-        end = int(sys.argv[3])
-    except ValueError:
-        sys.exit("Only use integers")
+    urls = {
+        "2020": "https://riksdagen.se/sv/webb-tv/?riksmote=2020/21&p=",
+        "2019": "https://riksdagen.se/sv/webb-tv/?riksmote=2019/20&p=",
+        "2018": "https://riksdagen.se/sv/webb-tv/?riksmote=2018/19&p=",
+        "2017": "https://riksdagen.se/sv/webb-tv/?riksmote=2017/18&p=",
+        "2016": "https://riksdagen.se/sv/webb-tv/?riksmote=2016/17&p=",
+        "2015": "https://riksdagen.se/sv/webb-tv/?riksmote=2015/16&p=",
+        "2014": "https://riksdagen.se/sv/webb-tv/?riksmote=2014/15&p=",
+        "2013": "https://riksdagen.se/sv/webb-tv/?riksmote=2013/14&p=",
+        "2012": "https://riksdagen.se/sv/webb-tv/?riksmote=2012/13&p=",
+        "2011": "https://riksdagen.se/sv/webb-tv/?riksmote=2011/12&p=",
+        "2010": "https://riksdagen.se/sv/webb-tv/?riksmote=2010/11&p=",
+        "2009": "https://riksdagen.se/sv/webb-tv/?riksmote=2009/10&p=",
+        "2008": "https://riksdagen.se/sv/webb-tv/?riksmote=2008/09&p=",
+        "2007": "https://riksdagen.se/sv/webb-tv/?riksmote=2007/08&p=",
+        "2006": "https://riksdagen.se/sv/webb-tv/?riksmote=2006/07&p=",
+        "2005": "https://riksdagen.se/sv/webb-tv/?riksmote=2005/06&p=",
+        "2004": "https://riksdagen.se/sv/webb-tv/?riksmote=2004/05&p=",
+        "2003": "https://riksdagen.se/sv/webb-tv/?riksmote=2003/04&p=",
+        "2002": "https://riksdagen.se/sv/webb-tv/?riksmote=2002/03&p=",
+        "2001": "https://riksdagen.se/sv/webb-tv/?riksmote=2001/02&p=",
+        "2000": "https://riksdagen.se/sv/webb-tv/?riksmote=2000/01&p="
+    }
+    parser = argparse.ArgumentParser(description="Archive debates from riksdagen.se")
+    parser.add_argument("--start", type=int, help="Starting page", default=1)
+    parser.add_argument("--end", type=int, help="Ending page", default=200)
+    parser.add_argument("--update", type=str, help="Year (2XXX) or all")
+    parser.add_argument("-o", "--output", type=str, help="Set download directory")
+    args = parser.parse_args()
 
-    if start > end:
-        sys.exit("Don't be silly")
+    base_dir = os.path.dirname(os.path.realpath(__file__))
+    if args.output:
+        base_dir = os.path.abspath(args.output)
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
 
-    scrape(url_prefix, start, end + 1)
+    if args.start > args.end:
+        sys.exit("Don't be silly, the start page cannot be greater than the end page.")
+    if args.update == "all":
+        for year in urls.keys():
+            scrape(urls[year], args.start, args.end + 1)
+    elif args.update == "db_check":
+        download_main(base_dir)
+        return
+    elif urls.get(args.update):
+        scrape(urls[args.update], args.start, args.end + 1)
+    else:
+        print("Incorrect parameters")
+
+    download_main(base_dir)
 
 
 main()

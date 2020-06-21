@@ -53,7 +53,8 @@ class Database():
             fromChamber integer,
             thumbnailUrl text,
             debateSeconds integer,
-            streamUrl text
+            streamUrl text,
+            downloaded integer default 0
         )""")
 
         self.cursor.execute("""
@@ -111,11 +112,20 @@ class Database():
 
     def get_download(self):
         sql = """
-        SELECT dokid, title, debateDate, streamURL
+        SELECT dokid, title, debateDate, streamURL, downloaded
         FROM debates
         """
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+    
+    def set_download(self, dokid):
+        sql = """
+        UPDATE `debates`
+        SET `downloaded`=1
+        WHERE dokid=?;
+        """
+        self.cursor.execute(sql, (dokid,))
+        self.__connection.commit()
 
     def __del__(self):
         self.__connection.close()

@@ -1,9 +1,9 @@
 import requests
 import os
 from tqdm.auto import tqdm
-import time
 from multiprocessing.pool import ThreadPool
 from database import Database
+import re
 
 
 def download_file(local_filename, url):
@@ -25,28 +25,41 @@ def download(in_args):
                        desc=eg_file[-20:]) as fout:
         for chunk in response.iter_content(chunk_size=4096):
             fout.write(chunk)
+    db = Database()
+    db.set_download(in_args[2])
+    db.__del__()
 
 
-def main():
-    download_dir = os.path.dirname(os.path.realpath(__file__))
+def format_name(title):
+    title = re.sub('[?/|\\\}{:<>*"]', '', title)
+    if len(title) > 190:
+        title = title[:120]
+    return title
+
+
+def download_main(download_dir):
     print("Downloading to", download_dir)
 
     db = Database()
     debates = db.get_download()
+    db.__del__()
 
     img_urls = []
     for debate in debates:
-        if all(debate):
-            name = os.path.join(download_dir, debate[2])
+        if debate[3] and debate[4] == 0:
+            title = debate[1]
+            if title == "" or title is None:
+                title = "no_title"
+            date = debate[2]
+            if date == "" or date is None:
+                date = "no_date"
+
+            name = os.path.join(download_dir, format_name(date))
             if not os.path.exists(name):
                 os.makedirs(name)
-            name = os.path.join(name, "{}-{}.mp4".format(str(debate[0]), str(debate[1])))
-            img_urls.append((name, debate[3]))
+            name = os.path.join(name, format_name("{}-{}.mp4".format(str(debate[0]), str(title))))
+            img_urls.append((name, debate[3], debate[0]))
 
-    with ThreadPool(processes=2) as tp:
-        map_start = time.time()
+    with ThreadPool(processes=4) as tp:
         for imap_result in tp.imap_unordered(download, img_urls):
-            print("{} - {:.2f} seconds".format(imap_result, time.time() - map_start))
-
-
-main()
+            pass
