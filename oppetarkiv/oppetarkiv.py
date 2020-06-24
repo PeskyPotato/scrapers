@@ -6,8 +6,11 @@ import json
 import youtube_dl
 import os
 import json
+import argparse
 
 VALID_URL = "https://www.oppetarkiv.se"
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 
 class MyLogger(object):
     def debug(self, msg):
@@ -60,21 +63,27 @@ def single_episode(path):
         ep_data["avsnitt_titel"] = episode_title.text.strip()
     
     data =  page_soup.find("span", {"class": "svt-video-meta"}).findChildren("strong")
-    ep_data["sändes"] = data[0].time['datetime']
-    ep_data["längd"] = data[1].text
+    if len(data) == 1:
+        if "min" in data[0].text or "sek" in data[0].text:
+            ep_data["längd"] = data[0].text
+            ep_data["sändes"] = "Saknar sändningsdatum"
+    elif len(data) == 2:
+        ep_data["sändes"] = data[0].time['datetime']
+        ep_data["längd"] = data[1].text
 
     description = page_soup.find("div", {"class": "svtContainerMain-Alt svtContainerMain-Alt--top-border svt-margin-bottom-0px"})
     ep_data["beskrivning"] = str(description)
 
-    ep_id = re.search(r'\/video\/(?P<ep_id>[0-9]*)\/', path).group('ep_id')
+    ep_id = re.search(r'\/video\/(?P<ep_id>[0-9]*)\/?', path).group('ep_id')
     ep_data['id'] = ep_id
 
     episode_title = ep_data.get("avsnitt_titel", "Ingen_avsnitt")
     title_clean = format_name(ep_data.get("titel", "Ingen_showtitel"))
 
-    if not os.path.exists(title_clean):
-        os.makedirs(title_clean)
-    with open(os.path.join(title_clean, format_name("{}-{}.json".format(ep_id, episode_title))), 'w') as f:
+    directory = os.path.join(BASE_DIR, title_clean)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    with open(os.path.join(directory, format_name("{}-{}.json".format(ep_id, episode_title))), 'w') as f:
         json.dump(ep_data, f)
 
     ydl_opts = {
@@ -82,7 +91,7 @@ def single_episode(path):
         'logger': MyLogger(),
         'continuedl': True,
         'ignoreerrors': True,
-        'outtmpl': os.path.join(title_clean, format_name("{}-{}.%(ext)s".format(ep_id, episode_title)))
+        'outtmpl': os.path.join(directory, format_name("{}-{}.%(ext)s".format(ep_id, episode_title)))
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([VALID_URL+path])
@@ -121,4 +130,19 @@ def scrape():
         for episode in episodes:
             single_episode(episode)
 
-scrape()
+
+def main ():
+    parser = argparse.ArgumentParser(description="Archive all programs from Öppet arkiv")
+    parser.add_argument("-o", "--output", type=str, help="Set download directory")
+    args = parser.parse_args()
+
+    global BASE_DIR
+    if args.output:
+        BASE_DIR = os.path.abspath(args.output)
+        if not os.path.exists(BASE_DIR):
+            os.makedirs(BASE_DIR)
+
+    scrape()
+
+
+main()

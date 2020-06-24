@@ -13,7 +13,14 @@ sudo apt install ffmpeg
 ```
 
 ## Usage
-Downloads all available programs
 ```
-python3 oppetarkiv.py
+$ python3 oppetarkiv.py -h
+usage: oppetarkiv.py [-h] [-o OUTPUT]
+
+Archive all programs from Öppet arkiv
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        Set download directory
 ```
