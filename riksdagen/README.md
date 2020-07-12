@@ -36,3 +36,23 @@ This will download debates from from the end of 2019 to the beginning of 2020, i
 ```bash
 $ python3 riksdagen.py --update 2019
 ```
+
+### Download all documents
+This downloads all available documents in html and sql form from [http://data.riksdagen.se/data/dokument/](http://data.riksdagen.se/data/dokument/) and divides them into folders. 
+```bash
+$ python3 dokument.py
+```
+$ python3 dokument.py -h
+Optional parameters for `dokument.py.
+```bash
+usage: dokument.py [-h] [-o OUTPUT] [-p PROCESSES]
+
+Archive documents from riksdagen.se
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        Set download directory
+  -p PROCESSES, --processes PROCESSES
+                        Set number of concurrent downloads
+```
