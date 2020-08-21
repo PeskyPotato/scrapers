@@ -7,6 +7,8 @@ from multiprocessing.pool import ThreadPool
 from tqdm.auto import tqdm
 from database import Project, User, Download, Database
 
+import sys
+
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 BASE_URL = "https://smutba.se"
 
@@ -73,7 +75,7 @@ def download_file(data, retries=0):
     local_filename = data[0]
     url = data[1]
     if os.path.isfile(local_filename):
-        return local_filename
+        return url
 
     try:
         response = requests.get(url, stream=True)
@@ -89,11 +91,14 @@ def download_file(data, retries=0):
         retries += 1
         download_file((local_filename, url), retries)
 
-    return local_filename
+    return url
 
 
 def get_file_url(url):
     page_html = requests.get(url)
+    if page_html.status_code == 404:
+        print("File {} does not exist on the site".format(url))
+        return False
     page_soup = soup(page_html.content, "html5lib")
     file_url = page_soup.find("div", {"class": "project-description-div"}).find("a").get("href", "")
     return BASE_URL + file_url
@@ -113,6 +118,8 @@ def download_all():
     for download in download_list:
         urls = db.get_url(download[0])
         url = get_file_url(urls[0][1])
+        if not url:
+            continue
         file_dir = os.path.join(BASE_DIR, "project", str(download[5]).zfill(5))
         file_location = os.path.join(file_dir, format_name(download[1]))
         if not os.path.exists(file_dir):
@@ -137,9 +144,9 @@ def download_all():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Archive assets from Smutbase")
+    parser = argparse.ArgumentParser(description="Archive assets from Smutbase and Open3DLab")
     parser.add_argument("--start", type=int, help="Starting project ID", default=1)
-    parser.add_argument("--end", type=int, help="Ending project ID", default=30500)
+    parser.add_argument("--end", type=int, help="Ending project ID", default=32500)
     parser.add_argument("-o", "--output", type=str, help="Set download directory")
     args = parser.parse_args()
 

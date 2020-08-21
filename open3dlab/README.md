@@ -1,6 +1,6 @@
-# Smutbase scraper
+# Open3DLab scraper
 
-This program is able to download all assets from [Smutba.se](https://smutba.se) along with the metadata, this site is NSFW.
+This program is able to download all assets from [Open3DLab](https://open3dlab.com) and [Smutba.se](https://smutba.se) along with the metadata, this site is NSFW.
 
 ## Prerequisites
 Install python3 requirements
@@ -11,7 +11,7 @@ pip3 install -r requirements.txt
 ## Usage
 ### All available arguments
 ```
-usage: smutbase-scraper.py [-h] [--start START] [--end END] [-o OUTPUT]
+usage: open3dlab-scraper.py [-h] [--start START] [--end END] [-o OUTPUT]
 
 Archive assets from Smutbase
 
