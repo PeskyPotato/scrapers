@@ -10,14 +10,20 @@ All scrapers in this repository with a brief description
 * calibre-server - Grabs ebooks from a calibre-server
 * dafont - Grabs fonts uploaded to dafont.com
 * iconmonstr - Grabs icons in all formats from iconmonstr.com
+* ijsrd - Grabs papers published to ijsrd.com
+* ijssb - Grabs papers published to ijssb.com
 * impawards - Grabs all movie posters from impawards.com
 * linfoxdomain - Grabs all flash games from linfoxdomain.com
 * memoryoftheworld - Grabs all the books from memoryoftheworld.org
+* open3dlab - Grabs all assets and metadata from [Open3DLab](https://open3dlab.com/) and [Smutbase](https://smutba.se/)(NSFW)
+* oppetarkiv - Grabs programmes from oppetarkiv.se
+* riksdagen - Grabs debates and documents from riksdagen.se
 * shzm - Grabs the top 50 songs by city from shazam.com
 * thecoverproject - Grabs all the game posters from thecoverproject.net
 * theoatmeal - Grabs comics from theoatmeal.com
 * unicode-emoji-chart - Grabs emoji and metadata from unicode.org
 * vulnhub - Downloads items and all metadata on each item from vulnhub.com
+* wad-archive - Grabs WADs with metadata from wa-archive.com
 * wallhaven - Grabs all the images for a given search query from wallhaven.cc
 * wallpaperflare - Grabs all or some wallpapers with search from wallpaperflare.com
 * waset - Grabs papers published to waset.org
