@@ -19,7 +19,11 @@ def download_file(local_filename, url):
 def download(in_args):
     eg_file = in_args[0]
     eg_link = in_args[1]
-    response = requests.get(eg_link, stream=True)
+    try:
+        response = requests.get(eg_link, stream=True)
+    except Exception as e:
+        print(e)
+        return False
     with tqdm.wrapattr(open(eg_file, "wb"), "write", miniters=1,
                        total=int(response.headers.get('content-length', 0)),
                        desc=eg_file[-20:]) as fout:

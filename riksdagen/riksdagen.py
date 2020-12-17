@@ -36,7 +36,10 @@ def enter_debate(url):
     dokid = match.group(1)
     debate = Debate(dokid)
 
-    r = requests.get(f"http://www.riksdagen.se/api/videostream/get/{dokid}")
+    try:
+        r = requests.get(f"http://www.riksdagen.se/api/videostream/get/{dokid}")
+    except Exception as e:
+        return {}
     if r.status_code != requests.codes.ok:
         print(f"ERROR: Bad status code for {dokid}")
         return {}
