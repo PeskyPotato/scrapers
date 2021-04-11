@@ -24,11 +24,15 @@ def download(in_args):
     except Exception as e:
         print(e)
         return False
-    with tqdm.wrapattr(open(eg_file, "wb"), "write", miniters=1,
-                       total=int(response.headers.get('content-length', 0)),
-                       desc=eg_file[-20:]) as fout:
-        for chunk in response.iter_content(chunk_size=4096):
-            fout.write(chunk)
+    try:
+        with tqdm.wrapattr(open(eg_file, "wb"), "write", miniters=1,
+                           total=int(response.headers.get('content-length', 0)),
+                           desc=eg_file[-20:]) as fout:
+            for chunk in response.iter_content(chunk_size=4096):
+                fout.write(chunk)
+    except requests.exceptions.ChunkedEncodingError as e:
+        print(e)
+        return False
     db = Database()
     db.set_download(in_args[2])
     db.__del__()
