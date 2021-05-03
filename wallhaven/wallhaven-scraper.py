@@ -14,6 +14,11 @@ import argparse
 #     y: float
 #     z: float = 0.0
 
+BASE_DIR = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    "wallpapers"
+)
+
 
 def parsePages(query, categories, purity, sorting, order, colors):
     print("Searching for {}".format(query.replace("%20", " ")))
@@ -72,7 +77,6 @@ def saveImage(picture_id):
         author_name = author_name[0].text
     image_full = image_soup.findAll("img", {"id": "wallpaper"})[0]["src"]
     image_ext = image_full.split(".")[-1]
-    print(author_name, "https:" + image_full)
 
     req_two = Request(
         image_full,
@@ -85,12 +89,20 @@ def saveImage(picture_id):
         }
     )
 
+    filename = os.path.join(BASE_DIR, "{}-{}.{}".format(author_name, picture_id, image_ext))
+    print(filename)
     try:
-        with open("wallpapers/{}-{}.{}".format(author_name, picture_id, image_ext), "wb") as f:
-            f.write(urlopen(req_two).read())
+        if not os.path.exists(filename):
+            with open(filename, "wb") as f:
+                f.write(urlopen(req_two).read())
+
+            print(author_name, image_full)
+        else:
+            print("Skipping", author_name, image_full)
     except URLError as e:
         print(e)
         print("Error saving", image_url)
+    sleep(5)
 
 
 def main():
@@ -102,6 +114,7 @@ def main():
     colors = ""
     parser = argparse.ArgumentParser()
     parser.add_argument("--sort", help="suported keywords relevance, random, date_added, views, favorites, toplist", default="relevance")
+    parser.add_argument("-o", "--output", type=str, help="Set download directory")
     parser.add_argument("query", help="enter serach term")
     args = parser.parse_args()
 
@@ -111,8 +124,11 @@ def main():
     if args.query:
         q = args.query.replace(" ", "%20")
 
-    if not os.path.exists('wallpapers'):
-        os.makedirs('wallpapers')
+    global BASE_DIR
+    if args.output:
+        BASE_DIR = os.path.abspath(args.output)
+        if not os.path.exists(BASE_DIR):
+            os.makedirs(BASE_DIR)
 
     parsePages(q, categories, purity, sort, order, colors)
 
