@@ -21,6 +21,7 @@ class Project():
                 Database().insert_image(image, self.id)
         except sqlite3.IntegrityError:
             return False
+        return True
     
     def __str__(self):
         return "{} - {}".format(self.id, self.title)
@@ -61,7 +62,7 @@ class Database():
     __DB_LOCATION = "./smutbase.db"
 
     def __init__(self):
-        self.__connection = sqlite3.connect(self.__DB_LOCATION)
+        self.__connection = sqlite3.connect(self.__DB_LOCATION, check_same_thread=False)
         self.cursor = self.__connection.cursor()
         self.create_tables()
 

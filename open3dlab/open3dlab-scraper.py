@@ -30,7 +30,7 @@ def scrape(project_id):
     project.title = page_soup.find("h1", {"id": "file_title"}).text
     images_e = page_soup.find_all("img", {"class": "project-detail-image-main"})
     for e in images_e:
-        project.images.append(BASE_URL + e["src"])
+        project.images.append(e["src"])
     project.description = page_soup.find("div", {"class": "panel__body"}).decode_contents()
 
     user_id = page_soup.find("h4", {"class": "panel__avatar-title"}).find("a").get("href", "").split("/")[-2]
@@ -68,7 +68,8 @@ def scrape(project_id):
     success = project.add_project()
     if not success:
         print("Project {} was not successfully added to the database".format(project_id))
-    print("Project {} added to the database".format(project_id))
+    else:
+        print("Project {} added to the database".format(project_id))
 
 
 def download_file(data, retries=0):
@@ -93,6 +94,11 @@ def download_file(data, retries=0):
 
     return url
 
+def download_download_wrapper(data):
+    download_file(data[:-1])
+    db = Database()
+    db.set_download_download(data[2])
+
 
 def get_file_url(url):
     page_html = requests.get(url)
@@ -101,7 +107,7 @@ def get_file_url(url):
         return False
     page_soup = soup(page_html.content, "html5lib")
     file_url = page_soup.find("div", {"class": "project-description-div"}).find("a").get("href", "")
-    return BASE_URL + file_url
+    return file_url
 
 
 def format_name(title):
@@ -117,6 +123,9 @@ def download_all():
     download_list_urls = []
     for download in download_list:
         urls = db.get_url(download[0])
+        if not urls:
+            print(f"No URL for Project {download[0]}")
+            continue
         url = get_file_url(urls[0][1])
         if not url:
             continue
@@ -124,11 +133,10 @@ def download_all():
         file_location = os.path.join(file_dir, format_name(download[1]))
         if not os.path.exists(file_dir):
             os.makedirs(file_dir)
-        download_list_urls.append((file_location, url))
-        db.set_download_download(download[0])
+        download_list_urls.append((file_location, url, download[0]))
 
     with ThreadPool(processes=4) as tp:
-        for imap_result in tp.imap_unordered(download_file, download_list_urls):
+        for imap_result in tp.imap_unordered(download_download_wrapper, download_list_urls):
             pass
 
     project_list = db.get_not_downloaded_project()
