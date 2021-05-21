@@ -19,11 +19,14 @@ def scrape(project_id):
         # print("Project {} exists in the datatbase".format(project_id))
         return True
 
-    url = "https://smutba.se/project/{}/".format(project_id)
+    url = f"https://smutba.se/project/{project_id}/"
     page_html = requests.get(url)
     if page_html.status_code == 404:
-        print("Project {} does not exist on the site".format(project_id))
+        print(f"Project {project_id} does not exist on the site")
         return False
+    elif page_html.status_code == 451:
+        print(f"Project {project_id} is unavailable for legal reasons.")
+
     page_soup = soup(page_html.content, "html5lib")
 
     project = Project(project_id)
@@ -166,7 +169,10 @@ def main():
             os.makedirs(BASE_DIR)
 
     for project_id in range(args.start, args.end+1):
-        scrape(project_id)
+        try:
+            scrape(project_id)
+        except Exception as e:
+            print(f"Project {project_id} encountered {e}")
 
     download_all()
 
