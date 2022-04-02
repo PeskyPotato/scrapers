@@ -38,7 +38,7 @@ def scrape(project_id):
 
     user_id = page_soup.find("h4", {"class": "panel__avatar-title"}).find("a").get("href", "").split("/")[-2]
     user = User(user_id)
-    user.name = page_soup.find("span", {"class": "username"}).text
+    user.name = page_soup.find("username-element").get("profilename")
     user.add_user()
     project.user = user
 
@@ -169,10 +169,10 @@ def main():
             os.makedirs(BASE_DIR)
 
     for project_id in range(args.start, args.end+1):
-        try:
-            scrape(project_id)
-        except Exception as e:
-            print(f"Project {project_id} encountered {e}")
+        #try:
+        scrape(project_id)
+        #except Exception as e:
+        #    print(f"Project {project_id} encountered {e}")
 
     download_all()
 
