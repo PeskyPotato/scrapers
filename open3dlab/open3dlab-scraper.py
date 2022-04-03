@@ -26,6 +26,7 @@ def scrape(project_id):
         return False
     elif page_html.status_code == 451:
         print(f"Project {project_id} is unavailable for legal reasons.")
+        return False
 
     page_soup = soup(page_html.content, "html5lib")
 
