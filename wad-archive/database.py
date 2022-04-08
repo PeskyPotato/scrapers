@@ -135,5 +135,8 @@ class Database():
         self.cursor.execute(sql, (wad.id, ))
         return self.cursor.fetchall()
 
+    def close(self):
+        self.__connection.close()
+
     def __del__(self):
         self.__connection.close()

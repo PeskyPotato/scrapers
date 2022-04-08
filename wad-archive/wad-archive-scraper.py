@@ -46,6 +46,7 @@ def download_download_wrapper(data):
     download_file(data[:-1])
     db = Database()
     db.set_wad_downloaded(data[2])
+    db.close()
 
 
 def download_all():
@@ -66,6 +67,7 @@ def download_all():
                 format_name(f"{wad.id}-{os.path.basename(url)}")
             )
             download_list_urls.append((filename, url, wad))
+    db.close()
 
     # download WADS
     with ThreadPool(processes=4) as tp:
@@ -74,15 +76,12 @@ def download_all():
             download_list_urls
         ):
             pass
-    # mark downlaoded in database if successful
-    pass
 
 
 def get_items():
     wads = []
-    # wad_types = ["PWAD", "PK3", "IWAD", "PK7", "WAD2", "WAD3", "PKE", "ZWAD"]
-    wad_types = ["PWAD", "PK3", "IWAD", "PK7", "WAD2", "WAD3", "PKE", "ZWAD"]
-    for wad_type in wad_types[3:]:
+    wad_types = ["PK3", "IWAD", "PK7", "WAD2", "WAD3", "PKE", "ZWAD"]
+    for wad_type in wad_types:
         wads = wads + get_items_by_type(wad_type)
         logging.info(f"Currently {len(wads)} fetched.")
     return wads
@@ -117,9 +116,9 @@ def get_items_by_type(wad_type):
             wad_link = wad.find("a").get("href")
             wads.append("https://www.wad-archive.com/" + wad_link)
             wad = WAD(wad_link.split("/")[-1])
-            db.insert_wad(wad)
+            #db.insert_wad(wad)
             get_item_metadata(wad_link.split("/")[-1])
-
+        db.close()
     return wads
 
 
@@ -177,6 +176,7 @@ def get_item_metadata(wad_id):
         if link.startswith("/wad/"):
             link = "https://www.wad-archive.com" + link
         db.insert_download_url(wad, link)
+    db.close()
 
 
 def main():
