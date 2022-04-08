@@ -80,7 +80,7 @@ def download_all():
 
 def get_items():
     wads = []
-    wad_types = ["PK3", "IWAD", "PK7", "WAD2", "WAD3", "PKE", "ZWAD"]
+    wad_types = ["PWAD", "PK3", "IWAD", "PK7", "WAD2", "WAD3", "PKE", "ZWAD"]
     for wad_type in wad_types:
         wads = wads + get_items_by_type(wad_type)
         logging.info(f"Currently {len(wads)} fetched.")
@@ -139,6 +139,10 @@ def get_item_metadata(wad_id):
     # collect WAD metadata and enter in database
     wad = WAD(wad_id)
     metadata_table = page_soup.find("div", {"class": "col-lg-8 order-lg-2"})
+    if not metadata_table:
+        logging.error(f"Unable to retrieve metadata {wad_id}")
+        db.close()
+        return
     for item in metadata_table.findAll("div"):
         item_content = item.findAll("div")
         if len(item_content) == 2:
@@ -171,11 +175,16 @@ def get_item_metadata(wad_id):
         db.insert_wad(wad)
 
     link_e = page_soup.find("ul", {"class": "downloadlinks"})
+    if not link_e:
+        logging.error(f"Unable to retrieve download links for {wad_id}")
+        db.close()
+        return
     links = [a.get("href") for a in link_e.find_all("a")]
     for link in links:
         if link.startswith("/wad/"):
             link = "https://www.wad-archive.com" + link
         db.insert_download_url(wad, link)
+
     db.close()
 
 
