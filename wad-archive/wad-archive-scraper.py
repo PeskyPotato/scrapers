@@ -1,169 +1,213 @@
-import http.cookiejar
-import requests
-import os
-import re
-from bs4 import BeautifulSoup as soup
-import json
 from multiprocessing.pool import ThreadPool
+from bs4 import BeautifulSoup as soup
+import requests
 import argparse
+import os
+import logging
+from tqdm.auto import tqdm
+import re
 
-cj = http.cookiejar.MozillaCookieJar('cookies.txt')
-cj.load()
+from database import WAD, Database
 
-BASE = "https://www.wad-archive.com"
-PROCESSES = 8
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-def download_file(in_args):
-    eg_file = in_args[0]
-    eg_link = in_args[1]
+def format_name(name):
+    name = re.sub('[?/|\\\}{:<>*"]', '', name)
+    if len(name) > 190:
+        name = name[:120]
+    return name
 
-    if eg_link == "?df=1":
-        print("No download for", eg_file)
-        return
 
-    if not os.path.isfile(eg_file):
-        print("Downloading", eg_link)
-        response = requests.get(eg_link, cookies=cj, stream=True)
-        with open(eg_file+".part", "wb") as fout:
+def download_file(data, retries=0):
+    local_filename = data[0]
+    url = data[1]
+    if os.path.isfile(local_filename):
+        return url
+
+    try:
+        response = requests.get(url, stream=True)
+        with tqdm.wrapattr(open(local_filename, "wb"), "write", miniters=1,
+                           total=int(response.headers.get('content-length', 0)),
+                           desc=local_filename[-20:]) as fout:
             for chunk in response.iter_content(chunk_size=4096):
                 fout.write(chunk)
-        try:
-            os.rename(eg_file + ".part", eg_file)
-        except FileNotFoundError:
-            print("Skipping", eg_file)
+    except requests.exceptions.HTTPError:
+        if retries > 5:
+            return
+        logging.info("retrying", url)
+        retries += 1
+        download_file((local_filename, url), retries)
+
+    return url
+
+
+def download_download_wrapper(data):
+    download_file(data[:-1])
+    db = Database()
+    db.set_wad_downloaded(data[2])
+
+
+def download_all():
+    # get all undownloaded WADs
+    db = Database()
+    download_list = db.get_not_downloaded_wads()
+    download_list_urls = []
+    for download in download_list:
+        wad = WAD(download[0])
+        urls = db.get_wad_url(wad)
+        if urls:
+            url = urls[0][1]
+            file_dir = os.path.join(BASE_DIR, wad.id)
+            if not os.path.exists(file_dir):
+                os.mkdir(file_dir)
+            filename = os.path.join(
+                file_dir,
+                format_name(f"{wad.id}-{os.path.basename(url)}")
+            )
+            download_list_urls.append((filename, url, wad))
+
+    # download WADS
+    with ThreadPool(processes=4) as tp:
+        for imap_result in tp.imap_unordered(
+            download_download_wrapper,
+            download_list_urls
+        ):
+            pass
+    # mark downlaoded in database if successful
+    pass
+
+
+def get_items():
+    wads = []
+    # wad_types = ["PWAD", "PK3", "IWAD", "PK7", "WAD2", "WAD3", "PKE", "ZWAD"]
+    wad_types = ["PWAD", "PK3", "IWAD", "PK7", "WAD2", "WAD3", "PKE", "ZWAD"]
+    for wad_type in wad_types[3:]:
+        wads = wads + get_items_by_type(wad_type)
+        logging.info(f"Currently {len(wads)} fetched.")
+    return wads
+
+
+def get_items_by_type(wad_type):
+    page = 1
+    wads = []
+    while True:
+        logging.info(f"Fetching {wad_type} WADs, page {page}")
+        page += 1
+        logging.debug(f"WAD_TYPE {wad_type}, page {page}")
+        url = f"https://www.wad-archive.com/Category/WADs/Wad-Type/{wad_type}/{page}"
+
+        page_response = requests.get(url, allow_redirects=False)
+        if not page_response.ok:
+            logging.error(f"Page {page} of type {wad_type} has an issue.")
+            continue
+        if (page_response.status_code > 300 and page_response.status_code < 399) or (page_response == 404):
+            logging.debug(f"end of {wad_type}")
+            break
+
+        page_soup = soup(page_response.content, "html5lib")
+
+        wads_div = page_soup.find("div", {"class": "d-flex flex-wrap"})
+        wads_element = wads_div.find_all(
+            "div", {"class": "d-flex flex-column flex-grow-1 pl-3 w-66"}
+        )
+
+        db = Database()
+        for wad in wads_element:
+            wad_link = wad.find("a").get("href")
+            wads.append("https://www.wad-archive.com/" + wad_link)
+            wad = WAD(wad_link.split("/")[-1])
+            db.insert_wad(wad)
+            get_item_metadata(wad_link.split("/")[-1])
+
+    return wads
+
+
+def get_item_metadata(wad_id):
+    # check if wad_id exists in database
+    logging.debug(f"Fetching metadata for {wad_id}")
+    db = Database()
+    wad_db = db.get_wad(wad_id)
+
+    # fetch page with wad_id
+    url = f"https://www.wad-archive.com/wad/{wad_id}"
+    page_resp = requests.get(url)
+    if not page_resp.ok:
+        logging.error(f"WAD {wad_id} has an issue.")
+
+    page_soup = soup(page_resp.content, "html5lib")
+
+    # collect WAD metadata and enter in database
+    wad = WAD(wad_id)
+    metadata_table = page_soup.find("div", {"class": "col-lg-8 order-lg-2"})
+    for item in metadata_table.findAll("div"):
+        item_content = item.findAll("div")
+        if len(item_content) == 2:
+            item_key = item_content[0].text
+            item_value = item_content[1].text
+            if item_key == "Filenames":
+                wad.filenames = item_value
+            elif item_key == "Size":
+                wad.size = item_value
+            elif item_key == "MD5":
+                wad.md5 = item_value
+            elif item_key == "SHA-1":
+                wad.sha1 = item_value
+            elif item_key == "SHA-256":
+                wad.sha256 = item_value
+            elif item_key == "WAD Type":
+                wad.wad_type = item_value
+            elif item_key == "IWAD":
+                wad.iwad = item_value
+            elif item_key == "Engines":
+                wad.engines = item_value
+            elif item_key == "Lumps":
+                wad.lumps = item_value
+            else:
+                logging.debug(f"WAD metadata key {item_key} is unknown.")
+
+    if wad_db:
+        db.replace_wad(wad)
     else:
-        print("Skippping duplicate", eg_link, end="\r")
+        db.insert_wad(wad)
 
-
-def format_name(title):
-    title = re.sub('[?/|\\\}{:<>*"]', '', title)
-    if len(title) > 190:
-        title = title[:120]
-    return title
-
-
-def wad_info(url):
-    data = {}
-    page_html = requests.get(url, cookies=cj).content
-    page_soup = soup(page_html, "lxml")
-
-    name = page_soup.find("h1", {"class": "break-all"})
-    data["name"] = name.text.strip()
-
-    data_type = page_soup.find("div", {"class": "panel-body"}).find_all("div", {"class": "col-md-3 col-xs-12"})
-    data_value = page_soup.find("div", {"class": "panel-body"}).find_all("div", {"class": "col-md-9 col-xs-10 col-xs-offset-2 col-md-offset-0"})
-
-    for i in range(0, len(data_value)):
-        data[data_type[i].text.strip()] = data_value[i].text.strip()
-
-    side_panel = page_soup.find("div", {"class": "col-lg-4 col-md-4 col-xs-12 col-xs-12-float-right main-image"})
-    description = side_panel.find("p").text
-    image = side_panel.a["href"]
-
-    data["image"] = image
-    data["description"] = description
-
-    readme = []
-
-    readme_e = page_soup.find_all("pre", {"class": "readme"})
-    for e in readme_e:
-        readme.append(e.text)
-    data["readme"] = readme
-
-    data["download"] = ""
-    download = page_soup.find("ul", {"class": "wad-links"}).find("a")
-    if download:
-        download = download["href"]
-        data["download"] = BASE + download
-
-    discs = []
-    discs_e = page_soup.find("div", {"class": "ibox"}).find_all("a")
-    for e in discs_e:
-        discs.append({"name": e["title"], "url": BASE + e["href"]})
-    data["discs"] = discs
-
-    file_dir = os.path.join("wad", format_name(data["name"]+"_"+data["MD5"]))
-    file_location = os.path.join(file_dir, format_name(os.path.basename(data["download"])))
-    if not os.path.exists(file_dir):
-        try:
-            os.makedirs(file_dir)
-        except FileExistsError:
-            print("FileExistsError", file_location)
-            pass
-
-    with open(os.path.join(file_dir, "{}_{}.json".format(format_name(data["name"]), data["MD5"])), "w+") as f:
-        json.dump(data, f)
-
-    download_file((file_location, data["download"] + "?df=1"))
-    return (file_location, data["download"] + "?df=1")
-
-
-def disc_info(url):
-    print("==== DISC:", url, "====")
-    data = {}
-
-    page_html = requests.get(url, cookies=cj).content
-    page_soup = soup(page_html, "lxml")
-
-    name = page_soup.find("h1", {"class": "break-all"})
-    data["name"] = name.text.strip()
-    description = page_soup.find("div", {"class": "panel-description"})
-    data["description"] = description.text.strip()
-
-    data_type = page_soup.find_all("div", {"class": "col-xs-3"})
-    data_value = page_soup.find_all("div", {"class": "col-xs-9"})
-
-    for i in range(0, len(data_value)):
-        data[data_type[i].text.strip()] = data_value[i].text.strip()
-
-    wad_list = []
-    download_queue = []
-    r_disc = re.compile('.*disc-.*')
-    wad_list_e = page_soup.find_all("ul", {"id": r_disc})
-    for wad_group in wad_list_e:
-        for wad in wad_group.find_all("a"):
-            wad_list.append({"name": wad.text, "url": BASE + wad["href"]})
-            download_queue.append(BASE + wad["href"])
-
-    data["wad_list"] = wad_list
-
-    file_dir = os.path.join("disc")
-    file_location = os.path.join(file_dir, format_name(data["name"]) + ".json")
-    if not os.path.exists(file_dir):
-        os.makedirs(file_dir)
-
-    with open(file_location, "w+") as f:
-        json.dump(data, f)
-    print(PROCESSES)
-    with ThreadPool(processes=PROCESSES) as tp:
-        for imap_result in tp.imap_unordered(wad_info, download_queue):
-            pass
-
-    return data
-
-
-def get_discs():
-    for page in range(0, 70, 10):
-        url = "https://www.wad-archive.com/category/Discs/{}".format(page)
-        page_html = requests.get(url, cookies=cj).content
-        page_soup = soup(page_html, "lxml")
-
-        discs_e = page_soup.find_all("div", {"class": "result-element"})
-        for e in discs_e:
-            disc_info(BASE + e.find("a")["href"])
+    link_e = page_soup.find("ul", {"class": "downloadlinks"})
+    links = [a.get("href") for a in link_e.find_all("a")]
+    for link in links:
+        if link.startswith("/wad/"):
+            link = "https://www.wad-archive.com" + link
+        db.insert_download_url(wad, link)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Archive documents from riksdagen.se")
-    parser.add_argument("-p", "--processes", type=int, help="Set number of concurrent downloads")
+    parser = argparse.ArgumentParser(description="Archive assets from wad-archive.com")
+    parser.add_argument("-o", "--output", type=str, help="Set download directory")
+    parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
 
-    global PROCESSES
-    if args.processes:
-        PROCESSES = args.processes
+    global BASE_DIR
+    BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-    get_discs()
+    arg_level = logging.INFO
+    if args.verbose:
+        arg_level = logging.DEBUG
+
+    logging.basicConfig(
+        level=arg_level,
+        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        datefmt='%m-%d %H:%M'
+    )
+
+    if args.output:
+        BASE_DIR = os.path.abspath(args.output)
+        if not os.path.exists(BASE_DIR):
+            os.makedirs(BASE_DIR)
+
+    logging.info("Fetching WADs")
+    get_items()
+
+    logging.info("Downloading WADS")
+    download_all()
 
 
 main()

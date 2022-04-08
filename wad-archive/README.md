@@ -15,15 +15,14 @@ pip3 install -r requirements.txt
 ### All available arguments
 ```bash
 $ python3 wad-archive-scraper.py -h
-usage: wad-archive-scraper.py [-h] [-p PROCESSES]
+usage: wad-archive-scraper.py [-h] [-o OUTPUT] [-v]
 
-Archive documents from riksdagen.se
+Archive assets from wad-archive.com
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p PROCESSES, --processes PROCESSES
-                        Set number of concurrent downloads
+  -o OUTPUT, --output OUTPUT
+                        Set download directory
+  -v, --verbose
 ```
 
-## Notes
-Downloading requires you to sign in, so after you sign in export the `cookies.txt` file and place it in the same directory as the scraper. The file must be called `cookies.txt`.
