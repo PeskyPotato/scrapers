@@ -37,11 +37,11 @@ def enter_debate(url):
     debate = Debate(dokid)
 
     try:
-        r = requests.get(f"http://www.riksdagen.se/api/videostream/get/{dokid}")
+        r = requests.get(f"https://data.riksdagen.se/api/mhs-vodapi?{dokid}")
     except Exception as e:
         return {}
     if r.status_code != requests.codes.ok:
-        print(f"ERROR: Bad status code for {dokid}")
+        print(f"ERROR: Bad status code for ({r.status_code}) {dokid}")
         return {}
     try:
         data = r.json()
@@ -80,7 +80,8 @@ def enter_debate(url):
     except sqlite3.IntegrityError:
         print(f"SKIPPING: Debate already exists {dokid}")
 
-    speakers = data["videodata"][0]["speakers"]
+    print(dokid, data)
+    speakers = data["videodata"][0].get("speakers")
     if isinstance(speakers, list):
         for speaker in speakers:
             speaker_obj = Speaker(speaker["subid"], dokid)
@@ -101,6 +102,8 @@ def enter_debate(url):
 
 def main():
     urls = {
+        "2022": "https://riksdagen.se/sv/webb-tv/?riksmote=2020/23&p=",
+        "2021": "https://riksdagen.se/sv/webb-tv/?riksmote=2020/22&p=",
         "2020": "https://riksdagen.se/sv/webb-tv/?riksmote=2020/21&p=",
         "2019": "https://riksdagen.se/sv/webb-tv/?riksmote=2019/20&p=",
         "2018": "https://riksdagen.se/sv/webb-tv/?riksmote=2018/19&p=",
